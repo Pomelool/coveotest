@@ -3,12 +3,14 @@ var FuzzySearch = require('fuzzy-search');
 var City = require("./city.js");
 
 var getSuggestions = async (query) => {
-    if (q === null || q.trim() === '') {
-        return {"Message": "Please query with at least a query string"}
-    }
     const q = query.q;
     const latitude = query.latitude;
     const longitude = query.longitude;
+
+    // case of empty query string
+    if (q === null || q === undefined || q.trim() === '') {
+        return {"Message": "Please query with at least a query string"}
+    }
 
     // read tsv file and process the data
     var db = await fs.readFileSync('./public/cities_canada-usa.tsv').toString().split('\n');
