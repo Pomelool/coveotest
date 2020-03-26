@@ -3,6 +3,9 @@ var FuzzySearch = require('fuzzy-search');
 var City = require("./city.js");
 
 var getSuggestions = async (query) => {
+    if (q === null || q.trim() === '') {
+        return {"Message": "Please query with at least a query string"}
+    }
     const q = query.q;
     const latitude = query.latitude;
     const longitude = query.longitude;
