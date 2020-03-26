@@ -64,21 +64,21 @@ function calcScore(arr, q, latitude, longitude) {
         // Calculate score lost caused by locations. 
         // The score will minus 0.05 * sum(abs(latitude different) + abs(longitude difference))
         // Location score lost is up to 0.3
-        if (latitude != null && city.lat != null) {
+        var latDiff = 0;
+        var longDiff = 0;
+        if (latitude !== null && latitude !== undefined && city.lat != null) {
             var latDiff = latitude - city.lat;
         }
-        if (longitude != null && city.long != null) {
+        if (longitude !== null && longitude !== undefined && city.long != null) {
             var longDiff = longitude - city.long;
         }
-        var distanceDiff = Math.abs(latDiff) + Math.abs(longDiff);
-        var distMinus = distanceDiff * 0.02;
+        var distMinus = (Math.abs(latDiff) + Math.abs(longDiff)) *0.22;
         if (distMinus > 0.3) {
             distMinus = 0.3;
         }
         city.score -= distMinus;
-
         // Calculate score lost caused by name. 
-        // name include search word: the score will minus 0.01 * number of different digits, score loss up to 0.5
+        // name include search word: the score will minus 0.04 * number of different digits, score loss up to 0.5
         // fuzzy match : the score will minus 0.05 * number of different digits, score loss up to 0.3
         if (city.name !== q && !city.name.includes(q) && !city.alt_name.split(',').includes(q)) {
             var nameMinus = (city.name.length - q.length) * 0.05;
@@ -88,7 +88,7 @@ function calcScore(arr, q, latitude, longitude) {
             city.score -= nameMinus;
         }
         else if (city.name !== q && city.name.includes(q) && !city.alt_name.split(',').includes(q)) {
-            var nameMinus = (city.name.length - q.length) * 0.01;
+            var nameMinus = (city.name.length - q.length) * 0.04;
             if (nameMinus > 0.3) {
                 nameMinus = 0.3;
             }
